@@ -196,66 +196,127 @@ class _HomePageState extends State<HomePage> {
       ),
       // drawer: Drawer(),
       drawer: Drawer(
-        child: ListView(
-          // padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 54, 51, 51),
-              ),
-              child: Consumer<RegistrationController>(
-                builder: (context, value, child) => Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        InkWell(
-                            onTap: () {
-                              _key.currentState!.closeDrawer();
-                            },
-                            child: Icon(
-                              Icons.close,
-                              color: Colors.white,
-                            ))
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          child: Image.asset(
-                            "assets/man.png",
-                            height: size.height * 0.07,
-                          ),
-                        ),
-                        SizedBox(
-                          width: size.width * 0.016,
-                        ),
-                        Flexible(
-                          child: Text(
-                            value.userName.toString().toUpperCase(),
-                            style: TextStyle(
+        child: Consumer<Controller>(
+          builder: (BuildContext context, Controller value, Widget? child) =>
+              ListView(
+            // padding: EdgeInsets.zero,
+            children: [
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 54, 51, 51),
+                ),
+                child: Consumer<RegistrationController>(
+                  builder: (context, value, child) => Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          InkWell(
+                              onTap: () {
+                                _key.currentState!.closeDrawer();
+                              },
+                              child: Icon(
+                                Icons.close,
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                              ))
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            child: Image.asset(
+                              "assets/man.png",
+                              height: size.height * 0.07,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          SizedBox(
+                            width: size.width * 0.016,
+                          ),
+                          Flexible(
+                            child: Text(
+                              value.userName.toString().toUpperCase(),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: size.height * 0.01),
-            InkWell(
+              SizedBox(height: size.height * 0.01),
+              InkWell(
+                  onTap: () {
+                    Provider.of<Controller>(context, listen: false).getCategory(
+                      context,
+                    );
+                    value.fromDate = null;
+                    value.todate = null;
+
+                    Provider.of<Controller>(context, listen: false)
+                        .getItemwisereport(context, " ",
+                            formattedDate.toString(), formattedDate.toString());
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ItemwiseReport()),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 9.0, right: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            // CircleAvatar(
+                            //   radius: 10,
+                            //   backgroundColor: Colors.transparent,
+                            //   backgroundImage: AssetImage(
+                            //     "assets/item.png",
+                            //   ),
+                            // ),
+                            Icon(
+                              Icons.report,
+                              size: 16,
+                              color: Colors.green,
+                            ),
+
+                            SizedBox(
+                              width: size.width * 0.01,
+                            ),
+                            Text(
+                              'Itemwise Report'.toUpperCase(),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.grey[700]),
+                            ),
+                          ],
+                        ),
+                        Icon(Icons.arrow_right, size: 37)
+                      ],
+                    ),
+                  )),
+              Divider(
+                height: 10,
+              ),
+
+              /////////////////////////////////////////////////////////////////////////////////
+              InkWell(
                 onTap: () {
                   Provider.of<Controller>(context, listen: false).getCategory(
                     context,
                   );
                   Provider.of<Controller>(context, listen: false)
-                      .getItemwisereport(context, " ", formattedDate.toString(),
-                          formattedDate.toString());
+                      .getPeaktimeBranchwiseReport(
+                    context,
+                    formattedDate.toString(),
+                  );
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ItemwiseReport()),
+                    MaterialPageRoute(
+                        builder: (context) => PeakwiseTimeReport()),
                   );
                 },
                 child: Padding(
@@ -265,24 +326,20 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Row(
                         children: [
-                          // CircleAvatar(
-                          //   radius: 10,
-                          //   backgroundColor: Colors.transparent,
-                          //   backgroundImage: AssetImage(
-                          //     "assets/item.png",
-                          //   ),
-                          // ),
                           Icon(
-                            Icons.report,
+                            Icons.timeline_outlined,
                             size: 16,
-                            color: Colors.green,
+                            color: Colors.blue,
                           ),
-
+                          // Image.asset(
+                          //   "assets/time.png",
+                          //   height: size.height * 0.02,
+                          // ),
                           SizedBox(
                             width: size.width * 0.01,
                           ),
                           Text(
-                            'Itemwise Report'.toUpperCase(),
+                            'Peakwise Time Report'.toUpperCase(),
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: Colors.grey[700]),
@@ -292,109 +349,62 @@ class _HomePageState extends State<HomePage> {
                       Icon(Icons.arrow_right, size: 37)
                     ],
                   ),
-                )),
-            Divider(
-              height: 10,
-            ),
-
-            /////////////////////////////////////////////////////////////////////////////////
-            InkWell(
-              onTap: () {
-                Provider.of<Controller>(context, listen: false).getCategory(
-                  context,
-                );
-                Provider.of<Controller>(context, listen: false)
-                    .getPeaktimeBranchwiseReport(
-                  context,
-                  formattedDate.toString(),
-                );
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PeakwiseTimeReport()),
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(left: 9.0, right: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.timeline_outlined,
-                          size: 16,
-                          color: Colors.blue,
-                        ),
-                        // Image.asset(
-                        //   "assets/time.png",
-                        //   height: size.height * 0.02,
-                        // ),
-                        SizedBox(
-                          width: size.width * 0.01,
-                        ),
-                        Text(
-                          'Peakwise Time Report'.toUpperCase(),
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.grey[700]),
-                        ),
-                      ],
-                    ),
-                    Icon(Icons.arrow_right, size: 37)
-                  ],
                 ),
               ),
-            ),
-            ////////////////////////////////////////////////////////////////////////////////////
-            Divider(
-              height: 10,
-            ),
-            InkWell(
-              onTap: () {
-                Provider.of<Controller>(context, listen: false).getCategory(
-                  context,
-                );
-                Provider.of<Controller>(context, listen: false)
-                    .getDamageCountReport(context, " ",
-                        formattedDate.toString(), formattedDate.toString());
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DamageCountReport()),
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(left: 9.0, right: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.report_off_sharp,
-                          size: 16,
-                          color: Colors.red,
-                        ),
-                        // Image.asset(
-                        //   "assets/damage.png",
-                        //   height: size.height * 0.02,
-                        // ),
-                        SizedBox(
-                          width: size.width * 0.01,
-                        ),
-                        Text(
-                          'Damage Count Report'.toUpperCase(),
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.grey[700]),
-                        ),
-                      ],
-                    ),
-                    Icon(Icons.arrow_right, size: 37)
-                  ],
-                ),
+              ////////////////////////////////////////////////////////////////////////////////////
+              Divider(
+                height: 10,
               ),
-            )
-          ],
+              InkWell(
+                onTap: () {
+                  Provider.of<Controller>(context, listen: false).getCategory(
+                    context,
+                  );
+                  value.fromDate = null;
+                  value.todate = null;
+                  Provider.of<Controller>(context, listen: false)
+                      .getDamageCountReport(context, " ",
+                          formattedDate.toString(), formattedDate.toString());
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DamageCountReport()),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 9.0, right: 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.report_off_sharp,
+                            size: 16,
+                            color: Colors.red,
+                          ),
+                          // Image.asset(
+                          //   "assets/damage.png",
+                          //   height: size.height * 0.02,
+                          // ),
+                          SizedBox(
+                            width: size.width * 0.01,
+                          ),
+                          Text(
+                            'Damage Count Report'.toUpperCase(),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey[700]),
+                          ),
+                        ],
+                      ),
+                      Icon(Icons.arrow_right, size: 37)
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
       body: Consumer<Controller>(

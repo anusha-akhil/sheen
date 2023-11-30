@@ -28,10 +28,10 @@ class _PeakwiseTimeReportState extends State<PeakwiseTimeReport> {
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: selectedDate,
+        initialDate: now,
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate) {
+    if (picked != null) {
       setState(() {
         selectedDate = picked;
         date = DateFormat('dd-MM-yyyy').format(selectedDate);
@@ -84,7 +84,9 @@ class _PeakwiseTimeReportState extends State<PeakwiseTimeReport> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
+                      padding: const EdgeInsets.only(
+                        right: 20.0,
+                      ),
                       child: Row(
                         children: [
                           // IconButton(
@@ -112,20 +114,20 @@ class _PeakwiseTimeReportState extends State<PeakwiseTimeReport> {
                           //     )),
                           InkWell(
                               onTap: () {
-                                dateFind.selectDateFind(
-                                  context,
-                                  "from date",
-                                );
+                                _selectDate(context);
                               },
                               child: Icon(Icons.calendar_month)),
+                          SizedBox(
+                            width: 10,
+                          ),
                           InkWell(
                             onTap: () {
-                              dateFind.selectDateFind(context, "from date");
+                              // dateFind.selectDateFind(context, "from date");
                             },
                             child: Text(
-                              value.fromDate == null
+                              date == null
                                   ? todaydate.toString()
-                                  : value.fromDate.toString(),
+                                  : date.toString(),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey[700],
