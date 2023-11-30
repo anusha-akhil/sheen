@@ -125,8 +125,10 @@ class _ReportTableState extends State<ReportTable> {
               Consumer<Controller>(
                 builder: (context, value, child) => Expanded(
                   child: DataTable(
-                      horizontalMargin: 0,
+                      horizontalMargin: 3,
                       headingRowHeight: 45,
+                      headingTextStyle:
+                          TextStyle(color: Colors.black, fontSize: 13),
                       headingRowColor: MaterialStateProperty.all(
                           Color.fromARGB(255, 252, 240, 137)),
                       decoration: BoxDecoration(
@@ -137,22 +139,21 @@ class _ReportTableState extends State<ReportTable> {
                           left: BorderSide(color: Colors.grey),
                         ),
                       ),
-                      dataRowHeight: 40,
+                      dataRowHeight: 50,
                       columnSpacing: 10,
                       dividerThickness: 1.0,
                       columns: getColumn(
                         value.fisttableHeader,
                       ),
-                      rows: getRows(widget.list, value.fisttableHeader)),
+                      rows: getRows(widget.list, value.fisttableHeader,"first")),
                 ),
               ),
               Expanded(
                 child: SingleChildScrollView(
-                  
                   scrollDirection: Axis.horizontal,
                   child: DataTable(
                       dividerThickness: 1.0,
-                      horizontalMargin: 0,
+                      horizontalMargin: 10,
                       headingRowHeight: 45,
                       headingTextStyle:
                           TextStyle(color: Colors.white, fontSize: 13),
@@ -160,7 +161,8 @@ class _ReportTableState extends State<ReportTable> {
                           Color.fromARGB(255, 87, 170, 238)),
                       border: TableBorder(
                         verticalInside: BorderSide(
-                            color: Color.fromARGB(255, 214, 214, 214), width: 0.7),
+                            color: Color.fromARGB(255, 214, 214, 214),
+                            width: 0.7),
                       ),
                       decoration: BoxDecoration(
                         border: Border(
@@ -169,11 +171,11 @@ class _ReportTableState extends State<ReportTable> {
                           right: BorderSide(color: Colors.grey),
                         ),
                       ),
-                      dataRowHeight: 40,
+                      dataRowHeight: 50,
                       columnSpacing: 10,
                       // dividerThickness: 0,
                       columns: getColumn(value.secndtablHeader),
-                      rows: getRows(widget.list, value.secndtablHeader)),
+                      rows: getRows(widget.list, value.secndtablHeader,"second")),
                 ),
               )
             ],
@@ -189,26 +191,31 @@ class _ReportTableState extends State<ReportTable> {
     print("listt-----${list}");
     for (int i = 0; i < list.length; i++) {
       tableColmn.add(DataColumn(
-          label: Text(
-        list[i],
-        style: TextStyle(fontWeight: FontWeight.bold),
+          label: Expanded(
+        child: Text(
+          list[i],
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       )));
     }
     return tableColmn;
   }
 
 /////////////////////////////////////////////////////////////////////////////////
-  List<DataRow> getRows(List<Map<String, dynamic>> listmap, List header) {
+  List<DataRow> getRows(List<Map<String, dynamic>> listmap, List header,String type) {
     List<DataRow> items = [];
     for (int i = 0; i < listmap.length; i++) {
-      items.add(DataRow(cells: getCelle(listmap[i], header)));
+      items.add(DataRow(cells: getCelle(listmap[i], header,type)));
     }
     print("itemss------$items");
     return items;
   }
 
 ///////////////////////////////////////////////////////////////////////////////////
-  List<DataCell> getCelle(Map<dynamic, dynamic> data, List header) {
+  List<DataCell> getCelle(Map<dynamic, dynamic> data, List header,String type) {
     print("data--$data");
     List<DataCell> datacell = [];
     for (var i = 0; i < header.length; i++) {
@@ -218,13 +225,14 @@ class _ReportTableState extends State<ReportTable> {
           datacell.add(
             DataCell(
               Container(
+                // alignment: Alignment.le,
                 // height: 50.0, width: 100.0,
                 // decoration: BoxDecoration(border: Border.all(color: Color.fromARGB(255, 141, 139, 139))),
                 child: Padding(
                   padding: EdgeInsets.all(0.0),
                   child: Text(
                     value,
-                    style: TextStyle(fontSize: 14),
+                    style: TextStyle(fontSize: 12, fontWeight: type=="first"? FontWeight.bold: FontWeight.w500),
                   ),
                 ),
               ),
