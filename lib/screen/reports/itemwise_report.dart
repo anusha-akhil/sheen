@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter_spinkit/flutter_spinkit.dart";
 import "package:google_fonts/google_fonts.dart";
 import "package:intl/intl.dart";
 import "package:lottie/lottie.dart";
@@ -127,18 +128,20 @@ class _ItemwiseReportState extends State<ItemwiseReport> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      
       appBar: AppBar(
         leading: InkWell(
             onTap: () {
               Navigator.pop(context);
             },
-            child: Icon(Icons.arrow_back,color: Colors.white,)),
+            child: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            )),
         backgroundColor: Color.fromARGB(255, 54, 51, 51),
         elevation: 0,
         title: const Text(
           "Itemwise Report",
-          style: TextStyle(fontSize: 15,color: Colors.white),
+          style: TextStyle(fontSize: 15, color: Colors.white),
         ),
       ),
       body: Padding(
@@ -281,12 +284,14 @@ class _ItemwiseReportState extends State<ItemwiseReport> {
                     child: ButtonTheme(
                       alignedDropdown: true,
                       child: DropdownButton<String>(
-                        value: selected, 
+                        value: selected,
                         // isDense: true,
+
                         hint: Text(
-                          value.catSelected == null
-                              ? "All"
-                              : value.catSelected!,
+                          "All",
+                          // value.catSelected == null
+                          //     ? "All"
+                          //     : value.catSelected!,
                           style: TextStyle(fontSize: 14),
                         ),
                         isExpanded: true,
@@ -310,15 +315,11 @@ class _ItemwiseReportState extends State<ItemwiseReport> {
                           if (item != null) {
                             print("clicked------$item");
                             setState(() {
-                              selected=item;
+                              selected = item;
                             });
                             // value.areaId = item;
                             // Provider.of<Controller>(context, listen: false)
                             //     .setDropdowndata(item);
-                            Provider.of<Controller>(context, listen: false)
-                                .getItemwisereport(
-                              context,
-                            );
                           }
                         },
                       ),
@@ -331,8 +332,28 @@ class _ItemwiseReportState extends State<ItemwiseReport> {
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             primary: Theme.of(context).primaryColor),
-                        onPressed: () {},
-                        child: Text("APPLY")),
+                        onPressed: () {
+                          String f, d;
+                          if (value.fromDate == null) {
+                            f = todaydate.toString();
+                          } else {
+                            f = value.fromDate.toString();
+                          }
+
+                          if (value.todate == null) {
+                            d = todaydate.toString();
+                          } else {
+                            d = value.todate.toString();
+                          }
+                          Provider.of<Controller>(context, listen: false)
+                              .getItemwisereport(
+                                  context, selected.toString(), f, d);
+                        },
+                        child: Text(
+                          "APPLY",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        )),
                   ))
                 ],
               ),
@@ -393,19 +414,23 @@ class _ItemwiseReportState extends State<ItemwiseReport> {
               //     )
               //   ],
               // ),
-              value.itemwise_report_list.length == 0
-                  ? Container(
-                      height: size.height * 0.6,
-                      child: Center(
-                        child: LottieBuilder.asset(
-                          "assets/nodata.json",
-                          height: size.height * 0.23,
-                        ),
-                      ),
+              value.isLoading
+                  ? SpinKitCircle(
+                      color: Colors.black,
                     )
-                  : ReportTable(
-                      list: value.itemwise_report_list,
-                    )
+                  : value.itemwise_report_list.length == 0
+                      ? Container(
+                          height: size.height * 0.6,
+                          child: Center(
+                            child: LottieBuilder.asset(
+                              "assets/nodata.json",
+                              height: size.height * 0.23,
+                            ),
+                          ),
+                        )
+                      : ReportTable(
+                          list: value.itemwise_report_list,
+                        )
             ],
           ),
         ),

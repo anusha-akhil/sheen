@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sheenbakery/controller/controller.dart';
 
 class ReportTable extends StatefulWidget {
-  List<Map<String,dynamic>> list=[];
+  List<Map<String, dynamic>> list = [];
   ReportTable({required this.list});
   @override
   State<ReportTable> createState() => _ReportTableState();
@@ -107,6 +107,14 @@ class _ReportTableState extends State<ReportTable> {
     color: Colors.black,
     fontSize: 13.2,
   );
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("kjdnkjs----${widget.list}");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<Controller>(
@@ -114,7 +122,7 @@ class _ReportTableState extends State<ReportTable> {
         children: [
           Consumer<Controller>(
             builder: (context, value, child) => DataTable(
-                horizontalMargin: 10,
+                horizontalMargin: 0,
                 headingRowHeight: 45,
                 headingRowColor: MaterialStateProperty.all(
                     Color.fromARGB(255, 252, 240, 137)),
@@ -127,42 +135,42 @@ class _ReportTableState extends State<ReportTable> {
                   ),
                 ),
                 dataRowHeight: 40,
-                columnSpacing: 8,
+                columnSpacing: 10,
                 dividerThickness: 1.0,
                 columns: getColumn(
                   value.fisttableHeader,
                 ),
-                rows:
-                    getRows(widget.list, value.fisttableHeader)),
+                rows: getRows(widget.list, value.fisttableHeader)),
           ),
           Expanded(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: DataTable(
-                  dividerThickness: 1.0,
-                  horizontalMargin: 10,
-                  headingRowHeight: 45,
-                  headingTextStyle:
-                      TextStyle(color: Colors.white, fontSize: 13),
-                  headingRowColor: MaterialStateProperty.all(
-                      Color.fromARGB(255, 87, 170, 238)),
-                  border: TableBorder(
-                    verticalInside: BorderSide(
-                        color: Color.fromARGB(255, 214, 214, 214), width: 0.7),
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      top: BorderSide(color: Colors.grey),
-                      bottom: BorderSide(color: Colors.grey),
-                      right: BorderSide(color: Colors.grey),
+              child: SingleChildScrollView(
+                child: DataTable(
+                    dividerThickness: 1.0,
+                    horizontalMargin: 0,
+                    headingRowHeight: 45,
+                    headingTextStyle:
+                        TextStyle(color: Colors.white, fontSize: 13),
+                    headingRowColor: MaterialStateProperty.all(
+                        Color.fromARGB(255, 87, 170, 238)),
+                    border: TableBorder(
+                      verticalInside: BorderSide(
+                          color: Color.fromARGB(255, 214, 214, 214), width: 0.7),
                     ),
-                  ),
-                  dataRowHeight: 40,
-                  columnSpacing: 18,
-                  // dividerThickness: 0,
-                  columns: getColumn(value.secndtablHeader),
-                  rows: getRows(
-                      widget.list, value.secndtablHeader)),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(color: Colors.grey),
+                        bottom: BorderSide(color: Colors.grey),
+                        right: BorderSide(color: Colors.grey),
+                      ),
+                    ),
+                    dataRowHeight: 40,
+                    columnSpacing: 10,
+                    // dividerThickness: 0,
+                    columns: getColumn(value.secndtablHeader),
+                    rows: getRows(widget.list, value.secndtablHeader)),
+              ),
             ),
           )
         ],
@@ -170,6 +178,7 @@ class _ReportTableState extends State<ReportTable> {
     );
   }
 
+/////////////////////////////////////////////////////////////////////////////////////
   List<DataColumn> getColumn(List list) {
     List<DataColumn> tableColmn = [];
     print("listt-----${list}");
@@ -189,6 +198,7 @@ class _ReportTableState extends State<ReportTable> {
     for (int i = 0; i < listmap.length; i++) {
       items.add(DataRow(cells: getCelle(listmap[i], header)));
     }
+    print("itemss------$items");
     return items;
   }
 

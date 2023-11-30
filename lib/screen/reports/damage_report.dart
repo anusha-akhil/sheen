@@ -34,12 +34,15 @@ class _DamageCountReportState extends State<DamageCountReport> {
             onTap: () {
               Navigator.pop(context);
             },
-            child: Icon(Icons.arrow_back,color: Colors.white,)),
+            child: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            )),
         backgroundColor: Color.fromARGB(255, 54, 51, 51),
         elevation: 0,
         title: const Text(
           "Itemwise Report",
-          style: TextStyle(fontSize: 15,color: Colors.white),
+          style: TextStyle(fontSize: 15, color: Colors.white),
         ),
       ),
       body: Padding(
@@ -212,10 +215,10 @@ class _DamageCountReportState extends State<DamageCountReport> {
                             // value.areaId = item;
                             Provider.of<Controller>(context, listen: false)
                                 .setDropdowndata(item);
-                            Provider.of<Controller>(context, listen: false)
-                                .getItemwisereport(
-                              context,
-                            );
+                            // Provider.of<Controller>(context, listen: false)
+                            //     .getItemwisereport(
+                            //   context,
+                            // );
                           }
                         },
                       ),
@@ -229,7 +232,10 @@ class _DamageCountReportState extends State<DamageCountReport> {
                         style: ElevatedButton.styleFrom(
                             primary: Theme.of(context).primaryColor),
                         onPressed: () {},
-                        child: Text("APPLY")),
+                        child: Text(
+                          "APPLY",
+                          style: TextStyle(color: Colors.white),
+                        )),
                   ))
                 ],
               ),

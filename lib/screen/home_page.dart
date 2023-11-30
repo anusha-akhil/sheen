@@ -255,9 +255,8 @@ class _HomePageState extends State<HomePage> {
                     context,
                   );
                   Provider.of<Controller>(context, listen: false)
-                      .getItemwisereport(
-                    context,
-                  );
+                      .getItemwisereport(context, " ",
+                          formattedDate.toString(), formattedDate.toString());
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => ItemwiseReport()),

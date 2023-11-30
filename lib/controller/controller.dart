@@ -408,11 +408,144 @@ class Controller extends ChangeNotifier {
   }
 
   /////////////////////////////////////////////////////////////////////////////
-  getItemwisereport(BuildContext context) {
+  getItemwisereport(
+      BuildContext context, String? cat, String fdate, String to_date) {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         try {
-          itemwise_report_list = [
+          // itemwise_report_list = [
+          //   {
+          //     "Item": "item2bfff ffffff",
+          //     'br1': "1000",
+          //     "Br2": "200",
+          //     "Br3": "100000",
+          //     "Br4": "345",
+          //     "Br5": "567",
+          //     "Br6": "1233",
+          //     'Br7': "345",
+          //     "Br8": "456",
+          //   },
+          //   {
+          //     "Item": "item1",
+          //     'br1': "2300",
+          //     "Br2": "3211",
+          //     "Br3": "100000",
+          //     "Br4": "22",
+          //     "Br5": "222",
+          //     "Br6": "233",
+          //     'Br7': "123",
+          //     "Br8": "2222",
+          //   },
+          //   {
+          //     "Item": "item3",
+          //     'br1': "4500",
+          //     "Br2": "3400",
+          //     "Br3": "100000",
+          //     "Br4": "999",
+          //     "Br5": "999",
+          //     "Br6": "9999",
+          //     'Br7': "anu",
+          //     "Br8": "manager",
+          //   },
+          //   {
+          //     "Item": "item5",
+          //     'Br1': "234",
+          //     "Br2": "4322",
+          //     "Br3": "100000",
+          //     "Br4": "88",
+          //     "Br5": "88",
+          //     "Br6": "888",
+          //     'Br7': "88",
+          //     "Br8": "manager",
+          //   },
+          //   {
+          //     "Item": "item8",
+          //     'Br1': "2222",
+          //     "Br2": "3333",
+          //     "Br3": "100000",
+          //     "Br4": "888",
+          //     "Br5": "888",
+          //     "Br6": "7777",
+          //     'Br7': "777",
+          //     "Br8": "6666",
+          //   },
+          //   {
+          //     "Item": "item5",
+          //     'Br1': "1234",
+          //     "Br2": "2345",
+          //     "Br3": "100000",
+          //     "Br4": "1233",
+          //     "Br5": "33333",
+          //     "Br6": "444",
+          //     'Br7': "5555",
+          //     "Br8": "66",
+          //   },
+          // ];
+          // fisttableHeader = ["Item"];
+
+          // secndtablHeader = [
+          //   "Br1",
+          //   "Br2",
+          //   "Br3",
+          //   "Br4",
+          //   "Br5",
+          //   "Br6",
+          //   "Br7",
+          //   "Br8"
+          // ];
+          Map body = {};
+          Uri url = Uri.parse("$apiurl/get_report.php");
+          if (cat == null || cat!.isEmpty || cat == " " || cat == "null") {
+            print("cat ull");
+            body = {
+              'cat': " ",
+              'f_date': fdate,
+              't_date': to_date,
+              "type": "1"
+            };
+          } else {
+            body = {
+              'cat': cat,
+              'f_date': fdate,
+              't_date': to_date,
+              "type": "1"
+            };
+          }
+
+          print("report body-------$body");
+          isLoading = true;
+          notifyListeners();
+          http.Response response = await http.post(url, body: body);
+          var map = jsonDecode(response.body);
+          print("itemwise  report---$map");
+          itemwise_report_list.clear();
+          for (var item in map) {
+            itemwise_report_list.add(item);
+          }
+          secndtablHeader = itemwise_report_list[0].keys.toList();
+          fisttableHeader = ["itemname"];
+          notifyListeners();
+
+          secndtablHeader.removeAt(0);
+          notifyListeners();
+          print("secndtablHeader-  --${secndtablHeader}");
+          isLoading = false;
+          notifyListeners();
+        } catch (e) {
+          print(e);
+          // return null;
+          return [];
+        }
+      }
+    });
+  }
+
+/////////////////////////////////////////////////////////////////////////
+  getDamageCountReport(BuildContext context) {
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        try {
+          damage_report_list = [
             {
               "Item": "item2bfff ffffff",
               'br1': "1000",
@@ -479,53 +612,139 @@ class Controller extends ChangeNotifier {
               'Br7': "5555",
               "Br8": "66",
             },
-          ];
-          fisttableHeader = ["Item"];
-
-          secndtablHeader = [
-            "Br1",
-            "Br2",
-            "Br3",
-            "Br4",
-            "Br5",
-            "Br6",
-            "Br7",
-            "Br8"
-          ];
-          // Uri url = Uri.parse("$apiurl/load_staff_sale.php");
-
-          // Map body = {
-          //   // 'branch_id': br_id,
-          //   // 'f_date': f_date,
-          // };
-          // print("category body-------$body");
-          // isLoading = true;
-          // notifyListeners();
-          // http.Response response = await http.post(url, body: body);
-          // var map = jsonDecode(response.body);
-          // print("sale report---$map");
-          // category_list.clear();
-          // for (var item in map) {
-          //   category_list.add(item);
-          // }
-          isLoading = false;
-          notifyListeners();
-        } catch (e) {
-          print(e);
-          // return null;
-          return [];
-        }
-      }
-    });
-  }
-
-/////////////////////////////////////////////////////////////////////////
-  getDamageCountReport(BuildContext context) {
-    NetConnection.networkConnection(context).then((value) async {
-      if (value == true) {
-        try {
-          damage_report_list = [
+             {
+              "Item": "item2bfff ffffff",
+              'br1': "1000",
+              "Br2": "200",
+              "Br3": "100000",
+              "Br4": "345",
+              "Br5": "567",
+              "Br6": "1233",
+              'Br7': "345",
+              "Br8": "456",
+            },
             {
+              "Item": "item1",
+              'br1': "2300",
+              "Br2": "3211",
+              "Br3": "100000",
+              "Br4": "22",
+              "Br5": "222",
+              "Br6": "233",
+              'Br7': "123",
+              "Br8": "2222",
+            },
+            {
+              "Item": "item3",
+              'br1': "4500",
+              "Br2": "3400",
+              "Br3": "100000",
+              "Br4": "999",
+              "Br5": "999",
+              "Br6": "9999",
+              'Br7': "anu",
+              "Br8": "manager",
+            },
+            {
+              "Item": "item5",
+              'Br1': "234",
+              "Br2": "4322",
+              "Br3": "100000",
+              "Br4": "88",
+              "Br5": "88",
+              "Br6": "888",
+              'Br7': "88",
+              "Br8": "manager",
+            },
+            {
+              "Item": "item8",
+              'Br1': "2222",
+              "Br2": "3333",
+              "Br3": "100000",
+              "Br4": "888",
+              "Br5": "888",
+              "Br6": "7777",
+              'Br7': "777",
+              "Br8": "6666",
+            },
+            {
+              "Item": "item5",
+              'Br1': "1234",
+              "Br2": "2345",
+              "Br3": "100000",
+              "Br4": "1233",
+              "Br5": "33333",
+              "Br6": "444",
+              'Br7': "5555",
+              "Br8": "66",
+            },
+             {
+              "Item": "item2bfff ffffff",
+              'br1': "1000",
+              "Br2": "200",
+              "Br3": "100000",
+              "Br4": "345",
+              "Br5": "567",
+              "Br6": "1233",
+              'Br7': "345",
+              "Br8": "456",
+            },
+            {
+              "Item": "item1",
+              'br1': "2300",
+              "Br2": "3211",
+              "Br3": "100000",
+              "Br4": "22",
+              "Br5": "222",
+              "Br6": "233",
+              'Br7': "123",
+              "Br8": "2222",
+            },
+            {
+              "Item": "item3",
+              'br1': "4500",
+              "Br2": "3400",
+              "Br3": "100000",
+              "Br4": "999",
+              "Br5": "999",
+              "Br6": "9999",
+              'Br7': "anu",
+              "Br8": "manager",
+            },
+            {
+              "Item": "item5",
+              'Br1': "234",
+              "Br2": "4322",
+              "Br3": "100000",
+              "Br4": "88",
+              "Br5": "88",
+              "Br6": "888",
+              'Br7': "88",
+              "Br8": "manager",
+            },
+            {
+              "Item": "item8",
+              'Br1': "2222",
+              "Br2": "3333",
+              "Br3": "100000",
+              "Br4": "888",
+              "Br5": "888",
+              "Br6": "7777",
+              'Br7': "777",
+              "Br8": "6666",
+            },
+            {
+              "Item": "item5",
+              'Br1': "1234",
+              "Br2": "2345",
+              "Br3": "100000",
+              "Br4": "1233",
+              "Br5": "33333",
+              "Br6": "444",
+              'Br7': "5555",
+              "Br8": "66",
+            },
+             {
               "Item": "item2bfff ffffff",
               'br1': "1000",
               "Br2": "200",
