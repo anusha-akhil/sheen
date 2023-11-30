@@ -306,6 +306,7 @@ class _HomePageState extends State<HomePage> {
                 Provider.of<Controller>(context, listen: false)
                     .getPeaktimeBranchwiseReport(
                   context,
+                  formattedDate.toString(),
                 );
                 Navigator.push(
                   context,
@@ -354,9 +355,8 @@ class _HomePageState extends State<HomePage> {
                   context,
                 );
                 Provider.of<Controller>(context, listen: false)
-                    .getDamageCountReport(
-                  context,
-                );
+                    .getDamageCountReport(context, " ",
+                        formattedDate.toString(), formattedDate.toString());
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => DamageCountReport()),

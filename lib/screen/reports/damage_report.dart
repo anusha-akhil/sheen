@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:sheenbakery/screen/reports/report_table.dart';
 
@@ -16,6 +18,8 @@ class DamageCountReport extends StatefulWidget {
 class _DamageCountReportState extends State<DamageCountReport> {
   DateFind dateFind = DateFind();
   String? todaydate;
+  String? selected;
+
   DateTime now = DateTime.now();
 
   @override
@@ -41,7 +45,7 @@ class _DamageCountReportState extends State<DamageCountReport> {
         backgroundColor: Color.fromARGB(255, 54, 51, 51),
         elevation: 0,
         title: const Text(
-          "Itemwise Report",
+          "Damage Report",
           style: TextStyle(fontSize: 15, color: Colors.white),
         ),
       ),
@@ -118,6 +122,35 @@ class _DamageCountReportState extends State<DamageCountReport> {
                         ),
                       ],
                     ),
+                    Expanded(
+                        child: Container(
+                      margin: EdgeInsets.only(top: 10),
+                      height: size.height * 0.05,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Theme.of(context).primaryColor),
+                          onPressed: () {
+                            String f, d;
+                            if (value.fromDate == null) {
+                              f = todaydate.toString();
+                            } else {
+                              f = value.fromDate.toString();
+                            }
+
+                            if (value.todate == null) {
+                              d = todaydate.toString();
+                            } else {
+                              d = value.todate.toString();
+                            }
+                            Provider.of<Controller>(context, listen: false)
+                                .getDamageCountReport(
+                                    context, selected.toString(), f, d);
+                          },
+                          child: Text(
+                            "APPLY",
+                            style: TextStyle(color: Colors.white),
+                          )),
+                    ))
                     // Flexible(
                     //     child: Container(
                     //   height: size.height * 0.05,
@@ -159,156 +192,24 @@ class _DamageCountReportState extends State<DamageCountReport> {
                 ),
                 // dropDownCustom(size,""),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: size.width * 0.01,
-                  ),
-                  Text(
-                    "Select a Category",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 2, right: 2, top: 12),
-                    decoration: BoxDecoration(
-                      border:
-                          Border.all(color: Color.fromARGB(255, 163, 163, 163)),
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                    width: size.width * 0.7,
-                    height: size.height * 0.05,
-                    child: ButtonTheme(
-                      alignedDropdown: true,
-                      child: DropdownButton<String>(
-                        // value: selected,
-                        // isDense: true,
-                        hint: Text(
-                          value.catSelected == null
-                              ? "All"
-                              : value.catSelected!,
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        isExpanded: true,
-                        autofocus: false,
-                        underline: SizedBox(),
-                        elevation: 0,
-                        items: value.category_list
-                            .map((item) => DropdownMenuItem<String>(
-                                value: item["cat_id"].toString(),
-                                child: Container(
-                                  width: size.width * 0.4,
-                                  child: Text(
-                                    item["cat_name"].toString(),
-                                    style: TextStyle(fontSize: 14),
-                                  ),
-                                )))
-                            .toList(),
-                        onChanged: (item) {
-                          print("clicked");
-                          if (item != null) {
-                            print("clicked------$item");
-                            // value.areaId = item;
-                            Provider.of<Controller>(context, listen: false)
-                                .setDropdowndata(item);
-                            // Provider.of<Controller>(context, listen: false)
-                            //     .getItemwisereport(
-                            //   context,
-                            // );
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                      child: Container(
-                    margin: EdgeInsets.only(top: 10),
-                    height: size.height * 0.05,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: Theme.of(context).primaryColor),
-                        onPressed: () {},
-                        child: Text(
-                          "APPLY",
-                          style: TextStyle(color: Colors.white),
-                        )),
-                  ))
-                ],
-              ),
               SizedBox(height: size.height * 0.02),
-              // SizedBox(height: size.height * 0.02),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.start,
-              //   children: [
-              //     SizedBox(
-              //       width: size.width * 0.01,
-              //     ),
-              //     Text(
-              //       "Select a Category",
-              //       style: TextStyle(fontWeight: FontWeight.bold),
-              //     ),
-              //   ],
-              // ),
-              // Flex(direction: Axis.vertical, children: [
-              //   Container(
-              //     margin: EdgeInsets.only(left: 2, right: 2, top: 12),
-              //     decoration: BoxDecoration(
-              //       border:
-              //           Border.all(color: Color.fromARGB(255, 163, 163, 163)),
-              //       borderRadius: BorderRadius.circular(3),
-              //     ),
-              //     // width: size.width * 0.4,
-              //     height: size.height * 0.05,
-
-              //     child: ButtonTheme(
-              //       alignedDropdown: true,
-              //       child: DropdownButton<String>(
-              //         // value: selected,
-              //         // isDense: true,
-              //         hint: Text(
-              //           value.catSelected == null ? "All" : value.catSelected!,
-              //           style: TextStyle(fontSize: 14),
-              //         ),
-              //         isExpanded: true,
-              //         autofocus: false,
-              //         underline: SizedBox(),
-              //         elevation: 0,
-              //         items: value.category_list
-              //             .map((item) => DropdownMenuItem<String>(
-              //                 value: item["cat_id"].toString(),
-              //                 child: Container(
-              //                   width: size.width * 0.4,
-              //                   child: Text(
-              //                     item["cat_name"].toString(),
-              //                     style: TextStyle(fontSize: 14),
-              //                   ),
-              //                 )))
-              //             .toList(),
-              //         onChanged: (item) {
-              //           print("clicked");
-              //           if (item != null) {
-              //             print("clicked------$item");
-              //             // value.areaId = item;
-              //             Provider.of<Controller>(context, listen: false)
-              //                 .setDropdowndata(item);
-              //             Provider.of<Controller>(context, listen: false)
-              //                 .getItemwisereport(
-              //               context,
-              //             );
-              //           }
-              //         },
-              //       ),
-              //     ),
-              //   ),
-              // ]),
-              SizedBox(height: size.height * 0.02),
-              ReportTable(
-                list: value.damage_report_list,
-              )
+              value.isLoading
+                  ? SpinKitCircle(
+                      color: Colors.black,
+                    )
+                  : value.damage_report_list.length == 0
+                      ? Container(
+                          height: size.height * 0.6,
+                          child: Center(
+                            child: LottieBuilder.asset(
+                              "assets/nodata.json",
+                              height: size.height * 0.23,
+                            ),
+                          ),
+                        )
+                      : ReportTable(
+                          list: value.damage_report_list,
+                        )
             ],
           ),
         ),
