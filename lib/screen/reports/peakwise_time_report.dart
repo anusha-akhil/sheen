@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
@@ -19,6 +20,29 @@ class _PeakwiseTimeReportState extends State<PeakwiseTimeReport> {
   DateFind dateFind = DateFind();
   String? todaydate;
   DateTime now = DateTime.now();
+
+  DateTime selectedDate = DateTime.now();
+  String? date;
+  TextEditingController seacrh = TextEditingController();
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        date = DateFormat('dd-MM-yyyy').format(selectedDate);
+        Provider.of<Controller>(context, listen: false)
+            .getPeaktimeBranchwiseReport(context, date!);
+      });
+    } else {
+      date = DateFormat('dd-MMM-yyyy').format(selectedDate);
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -28,19 +52,22 @@ class _PeakwiseTimeReportState extends State<PeakwiseTimeReport> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size ;
+    Size size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
-         leading: InkWell(
+        leading: InkWell(
             onTap: () {
               Navigator.pop(context);
             },
-            child: Icon(Icons.arrow_back,color: Colors.white,)),
+            child: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            )),
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(
           "Peakwise Time Report",
-          style: TextStyle(fontSize: 14,color: Colors.white),
+          style: TextStyle(fontSize: 14, color: Colors.white),
         ),
       ),
       body: Padding(
@@ -54,7 +81,7 @@ class _PeakwiseTimeReportState extends State<PeakwiseTimeReport> {
               Container(
                 height: size.height * 0.08,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 20.0),
@@ -85,7 +112,10 @@ class _PeakwiseTimeReportState extends State<PeakwiseTimeReport> {
                           //     )),
                           InkWell(
                               onTap: () {
-                                dateFind.selectDateFind(context, "from date");
+                                dateFind.selectDateFind(
+                                  context,
+                                  "from date",
+                                );
                               },
                               child: Icon(Icons.calendar_month)),
                           InkWell(
@@ -105,88 +135,27 @@ class _PeakwiseTimeReportState extends State<PeakwiseTimeReport> {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      width: size.width * 0.05,
-                    ),
-                    Row(
-                      children: [
-                        InkWell(
-                            onTap: () {
-                              dateFind.selectDateFind(context, "to date");
-                            },
-                            child: Icon(Icons.calendar_month)),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 20.0),
-                          child: InkWell(
-                            onTap: () {
-                              dateFind.selectDateFind(context, "to date");
-                            },
-                            child: Text(
-                              value.todate == null
-                                  ? todaydate.toString()
-                                  : value.todate.toString(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey[700],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                        child: Container(
-                      height: size.height * 0.05,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Theme.of(context).primaryColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(2), // <-- Radius
-                            ),
-                          ),
-                          onPressed: () {
-                            String df;
-                            String tf;
-
-                            if (value.fromDate == null) {
-                              df = todaydate.toString();
-                            } else {
-                              df = value.fromDate.toString();
-                            }
-                            if (value.todate == null) {
-                              tf = todaydate.toString();
-                            } else {
-                              tf = value.todate.toString();
-                            }
-                          },
-                          child: Text(
-                            "APPLY",
-                            style: GoogleFonts.aBeeZee(
-                                textStyle:
-                                    Theme.of(context).textTheme.bodyText2,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          )),
-                    ))
                   ],
                 ),
                 // dropDownCustom(size,""),
               ),
-              value.peakwise_time_report_list.length == 0
-                  ? Container(
-                      height: size.height * 0.6,
-                      child: Center(
-                        child: LottieBuilder.asset(
-                          "assets/nodata.json",
-                          height: size.height * 0.23,
-                        ),
-                      ),
+              value.isLoading
+                  ? SpinKitCircle(
+                      color: Colors.black,
                     )
-                  : ReportTable(
-                      list: value.peakwise_time_report_list,
-                    ),
+                  : value.peakwise_time_report_list.length == 0
+                      ? Container(
+                          height: size.height * 0.6,
+                          child: Center(
+                            child: LottieBuilder.asset(
+                              "assets/nodata.json",
+                              height: size.height * 0.23,
+                            ),
+                          ),
+                        )
+                      : ReportTable(
+                          list: value.peakwise_time_report_list,
+                        ),
             ],
           ),
         ),
