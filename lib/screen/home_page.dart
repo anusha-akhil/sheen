@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
@@ -8,13 +6,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sheenbakery/controller/registration_controller.dart';
 import 'package:sheenbakery/screen/authentication/login.dart';
 import 'package:sheenbakery/screen/reports/damage_report.dart';
-
 import 'package:sheenbakery/screen/reports/itemwise_report.dart';
 import 'package:sheenbakery/screen/reports/peakwise_time_report.dart';
 import 'package:sheenbakery/screen/reports/sale_report.dart';
 import 'package:sheenbakery/screen/widgets/detail_sheet.dart';
 import 'package:http/http.dart' as http;
-
 import '../controller/controller.dart';
 
 class HomePage extends StatefulWidget {
@@ -255,8 +251,8 @@ class _HomePageState extends State<HomePage> {
                     context,
                   );
                   Provider.of<Controller>(context, listen: false)
-                      .getItemwisereport(context, " ",
-                          formattedDate.toString(), formattedDate.toString());
+                      .getItemwisereport(context, " ", formattedDate.toString(),
+                          formattedDate.toString());
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => ItemwiseReport()),

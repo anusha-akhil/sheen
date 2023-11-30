@@ -125,8 +125,10 @@ class _ReportTableState extends State<ReportTable> {
               Consumer<Controller>(
                 builder: (context, value, child) => Expanded(
                   child: DataTable(
-                      horizontalMargin: 0,
+                      horizontalMargin: 3,
                       headingRowHeight: 45,
+                      headingTextStyle:
+                          TextStyle(color: Colors.black, fontSize: 13),
                       headingRowColor: MaterialStateProperty.all(
                           Color.fromARGB(255, 252, 240, 137)),
                       decoration: BoxDecoration(
@@ -137,7 +139,7 @@ class _ReportTableState extends State<ReportTable> {
                           left: BorderSide(color: Colors.grey),
                         ),
                       ),
-                      dataRowHeight: 40,
+                      dataRowHeight: 50,
                       columnSpacing: 10,
                       dividerThickness: 1.0,
                       columns: getColumn(
@@ -148,11 +150,10 @@ class _ReportTableState extends State<ReportTable> {
               ),
               Expanded(
                 child: SingleChildScrollView(
-                  
                   scrollDirection: Axis.horizontal,
                   child: DataTable(
                       dividerThickness: 1.0,
-                      horizontalMargin: 0,
+                      horizontalMargin: 5,
                       headingRowHeight: 45,
                       headingTextStyle:
                           TextStyle(color: Colors.white, fontSize: 13),
@@ -160,7 +161,8 @@ class _ReportTableState extends State<ReportTable> {
                           Color.fromARGB(255, 87, 170, 238)),
                       border: TableBorder(
                         verticalInside: BorderSide(
-                            color: Color.fromARGB(255, 214, 214, 214), width: 0.7),
+                            color: Color.fromARGB(255, 214, 214, 214),
+                            width: 0.7),
                       ),
                       decoration: BoxDecoration(
                         border: Border(
@@ -169,7 +171,7 @@ class _ReportTableState extends State<ReportTable> {
                           right: BorderSide(color: Colors.grey),
                         ),
                       ),
-                      dataRowHeight: 40,
+                      dataRowHeight: 50,
                       columnSpacing: 10,
                       // dividerThickness: 0,
                       columns: getColumn(value.secndtablHeader),
@@ -190,12 +192,15 @@ class _ReportTableState extends State<ReportTable> {
     print("listt-----${list}");
     for (int i = 0; i < list.length; i++) {
       tableColmn.add(DataColumn(
-          label: Text(
-                    list[i],
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-          
-          ));
+          label: Expanded(
+        child: Text(
+          list[i],
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      )));
     }
     return tableColmn;
   }
@@ -204,9 +209,7 @@ class _ReportTableState extends State<ReportTable> {
   List<DataRow> getRows(List<Map<String, dynamic>> listmap, List header,String type) {
     List<DataRow> items = [];
     for (int i = 0; i < listmap.length; i++) {
-      items.add(DataRow(
-        
-        cells: getCelle(listmap[i], header,type)));
+      items.add(DataRow(cells: getCelle(listmap[i], header,type)));
     }
     print("itemss------$items");
     return items;
@@ -223,11 +226,15 @@ class _ReportTableState extends State<ReportTable> {
           datacell.add(
             DataCell(
               Container(
+                // alignment: Alignment.le,
                 // height: 50.0, width: 100.0,
                 // decoration: BoxDecoration(border: Border.all(color: Color.fromARGB(255, 141, 139, 139))),
-                child: Text(
-                  value,
-                  style: TextStyle(fontSize: 14,fontWeight: type=="first"?FontWeight.bold:FontWeight.normal),
+                child: Padding(
+                  padding: EdgeInsets.all(0.0),
+                  child: Text(
+                    value,
+                    style: TextStyle(fontSize: 12, fontWeight: type=="first"? FontWeight.bold: FontWeight.w500),
+                  ),
                 ),
               ),
             ),

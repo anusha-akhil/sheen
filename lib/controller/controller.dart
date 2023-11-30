@@ -495,15 +495,18 @@ class Controller extends ChangeNotifier {
           // ];
           Map body = {};
           Uri url = Uri.parse("$apiurl/get_report.php");
-          if (cat == null || cat!.isEmpty || cat == " " || cat == "null") {
+          if (cat == null || cat!.isEmpty || cat == " " || cat == "null") 
+          {
             print("cat ull");
             body = {
               'cat': " ",
-              'f_date': "01-06-2023",
-              't_date': "21-06-2023",
+              'f_date': fdate,
+              't_date': to_date,
               "type": "1"
             };
-          } else {
+          } 
+          else
+          {
             body = {
               'cat': cat,
               'f_date': fdate,
@@ -941,7 +944,6 @@ class Controller extends ChangeNotifier {
       }
     });
   }
-
 ///////////////////////////////////////////////////////////////////////////////
   setDate(String date1, String date2) {
     fromDate = date1;
