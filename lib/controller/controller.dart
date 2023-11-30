@@ -499,8 +499,8 @@ class Controller extends ChangeNotifier {
             print("cat ull");
             body = {
               'cat': " ",
-              'f_date': fdate,
-              't_date': to_date,
+              'f_date': "01-06-2023",
+              't_date': "21-06-2023",
               "type": "1"
             };
           } else {
@@ -523,7 +523,7 @@ class Controller extends ChangeNotifier {
             itemwise_report_list.add(item);
           }
           secndtablHeader = itemwise_report_list[0].keys.toList();
-          fisttableHeader = ["itemname"];
+          fisttableHeader = [itemwise_report_list[0].keys.first.toUpperCase()];
           notifyListeners();
 
           secndtablHeader.removeAt(0);

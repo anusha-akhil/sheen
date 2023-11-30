@@ -118,62 +118,67 @@ class _ReportTableState extends State<ReportTable> {
   @override
   Widget build(BuildContext context) {
     return Consumer<Controller>(
-      builder: (context, value, child) => Row(
-        children: [
-          Consumer<Controller>(
-            builder: (context, value, child) => DataTable(
-                horizontalMargin: 0,
-                headingRowHeight: 45,
-                headingRowColor: MaterialStateProperty.all(
-                    Color.fromARGB(255, 252, 240, 137)),
-                decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(color: Colors.grey),
-                    right: BorderSide(color: Colors.grey),
-                    bottom: BorderSide(color: Colors.grey),
-                    left: BorderSide(color: Colors.grey),
-                  ),
-                ),
-                dataRowHeight: 40,
-                columnSpacing: 10,
-                dividerThickness: 1.0,
-                columns: getColumn(
-                  value.fisttableHeader,
-                ),
-                rows: getRows(widget.list, value.fisttableHeader)),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: SingleChildScrollView(
-                child: DataTable(
-                    dividerThickness: 1.0,
-                    horizontalMargin: 0,
-                    headingRowHeight: 45,
-                    headingTextStyle:
-                        TextStyle(color: Colors.white, fontSize: 13),
-                    headingRowColor: MaterialStateProperty.all(
-                        Color.fromARGB(255, 87, 170, 238)),
-                    border: TableBorder(
-                      verticalInside: BorderSide(
-                          color: Color.fromARGB(255, 214, 214, 214), width: 0.7),
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        top: BorderSide(color: Colors.grey),
-                        bottom: BorderSide(color: Colors.grey),
-                        right: BorderSide(color: Colors.grey),
+      builder: (context, value, child) => Expanded(
+        child: SingleChildScrollView(
+          child: Row(
+            children: [
+              Consumer<Controller>(
+                builder: (context, value, child) => Expanded(
+                  child: DataTable(
+                      horizontalMargin: 0,
+                      headingRowHeight: 45,
+                      headingRowColor: MaterialStateProperty.all(
+                          Color.fromARGB(255, 252, 240, 137)),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(color: Colors.grey),
+                          right: BorderSide(color: Colors.grey),
+                          bottom: BorderSide(color: Colors.grey),
+                          left: BorderSide(color: Colors.grey),
+                        ),
                       ),
-                    ),
-                    dataRowHeight: 40,
-                    columnSpacing: 10,
-                    // dividerThickness: 0,
-                    columns: getColumn(value.secndtablHeader),
-                    rows: getRows(widget.list, value.secndtablHeader)),
+                      dataRowHeight: 40,
+                      columnSpacing: 10,
+                      dividerThickness: 1.0,
+                      columns: getColumn(
+                        value.fisttableHeader,
+                      ),
+                      rows: getRows(widget.list, value.fisttableHeader)),
+                ),
               ),
-            ),
-          )
-        ],
+              Expanded(
+                child: SingleChildScrollView(
+                  
+                  scrollDirection: Axis.horizontal,
+                  child: DataTable(
+                      dividerThickness: 1.0,
+                      horizontalMargin: 0,
+                      headingRowHeight: 45,
+                      headingTextStyle:
+                          TextStyle(color: Colors.white, fontSize: 13),
+                      headingRowColor: MaterialStateProperty.all(
+                          Color.fromARGB(255, 87, 170, 238)),
+                      border: TableBorder(
+                        verticalInside: BorderSide(
+                            color: Color.fromARGB(255, 214, 214, 214), width: 0.7),
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(color: Colors.grey),
+                          bottom: BorderSide(color: Colors.grey),
+                          right: BorderSide(color: Colors.grey),
+                        ),
+                      ),
+                      dataRowHeight: 40,
+                      columnSpacing: 10,
+                      // dividerThickness: 0,
+                      columns: getColumn(value.secndtablHeader),
+                      rows: getRows(widget.list, value.secndtablHeader)),
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
