@@ -122,35 +122,7 @@ class _DamageCountReportState extends State<DamageCountReport> {
                         ),
                       ],
                     ),
-                    Expanded(
-                        child: Container(
-                      margin: EdgeInsets.only(top: 10),
-                      height: size.height * 0.05,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).primaryColor),
-                          onPressed: () {
-                            String f, d;
-                            if (value.fromDate == null) {
-                              f = todaydate.toString();
-                            } else {
-                              f = value.fromDate.toString();
-                            }
 
-                            if (value.todate == null) {
-                              d = todaydate.toString();
-                            } else {
-                              d = value.todate.toString();
-                            }
-                            Provider.of<Controller>(context, listen: false)
-                                .getDamageCountReport(
-                                    context, selected.toString(), f, d);
-                          },
-                          child: Text(
-                            "APPLY",
-                            style: TextStyle(color: Colors.white),
-                          )),
-                    ))
                     // Flexible(
                     //     child: Container(
                     //   height: size.height * 0.05,
@@ -190,7 +162,36 @@ class _DamageCountReportState extends State<DamageCountReport> {
                     // ))
                   ],
                 ),
+
                 // dropDownCustom(size,""),
+              ),
+              SizedBox(
+                // margin: EdgeInsets.only(top: 5),
+                height: size.height * 0.05,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: Theme.of(context).primaryColor),
+                    onPressed: () {
+                      String f, d;
+                      if (value.fromDate == null) {
+                        f = todaydate.toString();
+                      } else {
+                        f = value.fromDate.toString();
+                      }
+
+                      if (value.todate == null) {
+                        d = todaydate.toString();
+                      } else {
+                        d = value.todate.toString();
+                      }
+                      Provider.of<Controller>(context, listen: false)
+                          .getDamageCountReport(
+                              context, selected.toString(), f, d);
+                    },
+                    child: Text(
+                      "APPLY",
+                      style: TextStyle(color: Colors.white),
+                    )),
               ),
               SizedBox(height: size.height * 0.02),
               value.isLoading
