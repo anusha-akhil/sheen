@@ -143,7 +143,7 @@ class _ReportTableState extends State<ReportTable> {
                       columns: getColumn(
                         value.fisttableHeader,
                       ),
-                      rows: getRows(widget.list, value.fisttableHeader)),
+                      rows: getRows(widget.list, value.fisttableHeader,"first")),
                 ),
               ),
               Expanded(
@@ -173,7 +173,7 @@ class _ReportTableState extends State<ReportTable> {
                       columnSpacing: 10,
                       // dividerThickness: 0,
                       columns: getColumn(value.secndtablHeader),
-                      rows: getRows(widget.list, value.secndtablHeader)),
+                      rows: getRows(widget.list, value.secndtablHeader,"second")),
                 ),
               )
             ],
@@ -184,31 +184,36 @@ class _ReportTableState extends State<ReportTable> {
   }
 
 /////////////////////////////////////////////////////////////////////////////////////
-  List<DataColumn> getColumn(List list) {
+  List<DataColumn> getColumn(List list) 
+  {
     List<DataColumn> tableColmn = [];
     print("listt-----${list}");
     for (int i = 0; i < list.length; i++) {
       tableColmn.add(DataColumn(
           label: Text(
-        list[i],
-        style: TextStyle(fontWeight: FontWeight.bold),
-      )));
+                    list[i],
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+          
+          ));
     }
     return tableColmn;
   }
 
 /////////////////////////////////////////////////////////////////////////////////
-  List<DataRow> getRows(List<Map<String, dynamic>> listmap, List header) {
+  List<DataRow> getRows(List<Map<String, dynamic>> listmap, List header,String type) {
     List<DataRow> items = [];
     for (int i = 0; i < listmap.length; i++) {
-      items.add(DataRow(cells: getCelle(listmap[i], header)));
+      items.add(DataRow(
+        
+        cells: getCelle(listmap[i], header,type)));
     }
     print("itemss------$items");
     return items;
   }
 
 ///////////////////////////////////////////////////////////////////////////////////
-  List<DataCell> getCelle(Map<dynamic, dynamic> data, List header) {
+  List<DataCell> getCelle(Map<dynamic, dynamic> data, List header,String type) {
     print("data--$data");
     List<DataCell> datacell = [];
     for (var i = 0; i < header.length; i++) {
@@ -220,12 +225,9 @@ class _ReportTableState extends State<ReportTable> {
               Container(
                 // height: 50.0, width: 100.0,
                 // decoration: BoxDecoration(border: Border.all(color: Color.fromARGB(255, 141, 139, 139))),
-                child: Padding(
-                  padding: EdgeInsets.all(0.0),
-                  child: Text(
-                    value,
-                    style: TextStyle(fontSize: 14),
-                  ),
+                child: Text(
+                  value,
+                  style: TextStyle(fontSize: 14,fontWeight: type=="first"?FontWeight.bold:FontWeight.normal),
                 ),
               ),
             ),
